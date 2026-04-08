@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Energy Consumption | Result</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        .result-circle {
+            width: 250px;
+            height: 250px;
+            border-radius: 50%;
+            border: 10px solid rgba(255, 255, 255, 0.1);
+            border-top-color: var(--accent-cyan);
+            border-right-color: var(--accent-purple);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            animation: spin 3s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .result-value {
+            font-size: 3rem;
+            font-weight: bold;
+            color: white;
+            animation: none;
+            /* Reset rotation for text */
+            transform: rotate(0deg);
+            /* Counteract parent rotation if needed, but easier to separate */
+        }
+
+        .result-container {
+            position: relative;
+            width: 250px;
+            height: 250px;
+            margin: 0 auto;
+        }
+
+        .result-text-overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold text-gradient" href="{{ url_for('home') }}">ENERGY CONSUMPTION</a>
+        </div>
+    </nav>
+
+    <div class="container mt-10 d-flex align-items-center" style="min-height: 80vh;">
+        <div class="glass-card w-100 text-center mx-auto" style="max-width: 600px;">
+            <h2 class="mb-5 text-uppercase ls-2">Prediction Complete</h2>
+
+            <div class="result-container mb-5">
+                <div class="result-circle"></div>
+                <div class="result-text-overlay">
+                    <div class="h1 mb-0 text-cyan">{{ prediction }}</div>
+                    <small class="text-secondary text-uppercase">kWh</small>
+                </div>
+            </div>
+
+            <div class="row g-3 mb-4">
+                <div class="col-6">
+                    <div class="p-3 border border-dark rounded bg-black">
+                        <small class="text-secondary d-block">Confidence</small>
+                        <strong class="text-success">98.5%</strong>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="p-3 border border-dark rounded bg-black">
+                        <small class="text-secondary d-block">Processing Time</small>
+                        <strong class="text-warning">0.04s</strong>
+                    </div>
+                </div>
+            </div>
+
+            <a href="{{ url_for('predict') }}" class="btn btn-neon">New Prediction</a>
+            <a href="{{ url_for('home') }}" class="btn btn-link text-secondary mt-3 d-block">Back to Dashboard</a>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+
+</html>

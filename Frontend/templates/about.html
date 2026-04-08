@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Energy Consumption | About</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold text-gradient" href="{{ url_for('home') }}">ENERGY CONSUMPTION</a>
+            <a href="{{ url_for('home') }}" class="btn btn-sm btn-outline-secondary">Back</a>
+        </div>
+    </nav>
+
+    <div class="container mt-10 py-5">
+        <!-- Hero / Intro -->
+        <div class="row justify-content-center mb-5">
+            <div class="col-lg-10 text-center">
+                <h1 class="display-4 fw-bold mb-4">About The <span class="text-gradient">System</span></h1>
+                <p class="lead text-secondary mx-auto" style="max-width: 800px;">
+                    Energy Consumption is a state-of-the-art predictive analytics platform designed to optimize energy
+                    consumption in residential and commercial sectors. We leverage the power of Artificial Intelligence
+                    to provide actionable insights for a sustainable future.
+                </p>
+            </div>
+        </div>
+
+        <!-- Mission Section -->
+        <section class="about-section py-5">
+            <div class="row align-items-center mb-5">
+                <div class="col-md-6 order-md-1" data-aos="fade-right">
+                    <h3 class="display-6 fw-bold mb-3 text-cyan">Our Mission</h3>
+                    <p class="text-secondary lead">
+                        To empower individuals and organizations with accurate, real-time energy forecasting.
+                        By understanding consumption patterns, we can reduce waste, lower operational costs,
+                        and contribute significantly to global energy conservation efforts.
+                    </p>
+                </div>
+                <div class="col-md-6 order-md-2" data-aos="fade-left">
+                    <div class="image-wrapper">
+                        <img src="https://images.unsplash.com/photo-1497435334941-8c899ee9e8e9?auto=format&fit=crop&w=800&q=80"
+                            alt="Mission" class="img-fluid rounded-4 shadow-lg glow-img">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Vision Section -->
+        <section class="about-section py-5">
+            <div class="row align-items-center mb-5">
+                <div class="col-md-6 order-md-2" data-aos="fade-left">
+                    <h3 class="display-6 fw-bold mb-3 text-purple">Our Vision</h3>
+                    <p class="text-seconcortexdary lead">
+                        We envision a world where energy management is autonomous and intelligent.
+                        A future where smart grids and IoT devices communicate seamlessly to balance load,
+                        integrate renewable sources, and ensure grid stability for everyone.
+                    </p>
+                </div>
+                <div class="col-md-6 order-md-1" data-aos="fade-right">
+                    <div class="image-wrapper">
+                        <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=800&q=80"
+                            alt="Vision" class="img-fluid rounded-4 shadow-lg glow-img">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tech Stack Section -->
+        <section class="tech-stack-section py-5">
+            <h2 class="text-center display-5 fw-bold mb-5">Technology <span class="text-gradient">Stack</span></h2>
+            <div class="row g-4">
+                <!-- Machine Learning -->
+                <div class="col-md-6 col-lg-3">
+                    <div class="glass-card tech-card h-100 text-center p-4">
+                        <i class="fas fa-brain fa-3x mb-3 text-cyan"></i>
+                        <h4 class="h5 fw-bold mb-3">Machine Learning</h4>
+                        <p class="text-secondary small">
+                            Powered by <strong>Random Forest Regression</strong> for high-accuracy time-series
+                            forecasting.
+                            Utilizing <strong>Scikit-Learn</strong> and <strong>Pandas</strong> for robust data
+                            processing.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Backend -->
+                <div class="col-md-6 col-lg-3">
+                    <div class="glass-card tech-card h-100 text-center p-4">
+                        <i class="fas fa-server fa-3x mb-3 text-purple"></i>
+                        <h4 class="h5 fw-bold mb-3">Backend Core</h4>
+                        <p class="text-secondary small">
+                            Built on <strong>Python Flask</strong>, ensuring a lightweight yet powerful server
+                            environment
+                            capable of handling real-time API requests and model serving.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Frontend -->
+                <div class="col-md-6 col-lg-3">
+                    <div class="glass-card tech-card h-100 text-center p-4">
+                        <i class="fas fa-code fa-3x mb-3 text-accent-green"></i>
+                        <h4 class="h5 fw-bold mb-3">Modern Frontend</h4>
+                        <p class="text-secondary small">
+                            A responsive interface crafted with <strong>HTML5</strong>, <strong>Bootstrap 5</strong>,
+                            and vanilla <strong>JavaScript</strong> for dynamic interactivity and smooth user
+                            experience.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Visualization -->
+                <div class="col-md-6 col-lg-3">
+                    <div class="glass-card tech-card h-100 text-center p-4">
+                        <i class="fas fa-chart-area fa-3x mb-3 text-warning"></i>
+                        <h4 class="h5 fw-bold mb-3">Data Visualization</h4>
+                        <p class="text-secondary small">
+                            Interactive charts and real-time dashboards to visualize energy trends, making complex data
+                            understandable and actionable.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+
+</html>

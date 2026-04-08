@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Energy Consumption | Predict</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        .method-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-secondary);
+        }
+
+        .method-btn.active {
+            background: rgba(0, 243, 255, 0.2);
+            border-color: var(--accent-cyan);
+            color: var(--accent-cyan);
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold text-gradient" href="{{ url_for('home') }}">ENERGY CONSUMPTION</a>
+            <div class="d-flex align-items-center">
+                <span class="text-secondary me-3 d-none d-md-block">Logged in as: <strong class="text-white">{{
+                        current_user.username }}</strong></span>
+                <a href="{{ url_for('logout') }}" class="btn btn-sm btn-outline-danger">Logout</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-10 py-5">
+
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        {% for category, message in messages %}
+        <div class="alert alert-{{ category }} alert-dismissible fade show glass-card mb-4" role="alert"
+            style="padding: 1rem; border-left: 4px solid var(--accent-cyan);">
+            {{ message }}
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert"></button>
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+
+        <div class="row g-4">
+            <!-- Left Column: Input Form -->
+            <div class="col-lg-8">
+                <div class="glass-card">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h2 class="h3 mb-0"><i class="fas fa-wave-square me-2 text-cyan"></i>Prediction Parameters</h2>
+
+                        <!-- Toggle Buttons -->
+                        <div class="btn-group">
+                            <button class="btn method-btn active"
+                                onclick="showMethod('individual'); document.querySelector('.method-btn:not(.active)').classList.remove('active'); this.classList.add('active');">Form</button>
+                            <button class="btn method-btn"
+                                onclick="showMethod('single'); document.querySelector('.method-btn.active').classList.remove('active'); this.classList.add('active');">Batch</button>
+                        </div>
+                    </div>
+
+                    <!-- Individual Form -->
+                    <div id="individual" class="input-section">
+                        <form method="POST">
+                            <input type="hidden" name="input_method" value="individual">
+
+                            <h5 class="text-secondary mb-3 text-uppercase fs-6 ls-1 border-bottom border-dark pb-2">
+                                Environment</h5>
+                            <div class="row g-3 mb-4">
+                                <div class="col-md-6">
+                                    <label class="form-label">Temperature (°C)</label>
+                                    <input type="number" step="0.1" name="Temperature" class="form-control"
+                                        placeholder="22.5" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Humidity (%)</label>
+                                    <input type="number" step="0.1" name="Humidity" class="form-control"
+                                        placeholder="45.0" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Square Footage</label>
+                                    <input type="number" name="SquareFootage" class="form-control" placeholder="1500"
+                                        required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Occupancy</label>
+                                    <input type="number" name="Occupancy" class="form-control" placeholder="4" required>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="renewableCheck"
+                                            onchange="this.nextElementSibling.value = this.checked ? 1 : 0">
+                                        <input type="hidden" name="RenewableEnergy" value="0">
+                                        <label class="form-check-label text-white" for="renewableCheck">Renewable Energy
+                                            Source Active</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <h5 class="text-secondary mb-3 text-uppercase fs-6 ls-1 border-bottom border-dark pb-2">
+                                Systems Status</h5>
+                            <div class="row g-3 mb-4">
+                                <!-- HVAC -->
+                                <div class="col-md-6">
+                                    <label class="form-label">HVAC State</label>
+                                    <select class="form-control"
+                                        onchange="if(this.value=='1'){document.getElementsByName('HVACUsage_On')[0].value=1;document.getElementsByName('HVACUsage_Off')[0].value=0}else{document.getElementsByName('HVACUsage_On')[0].value=0;document.getElementsByName('HVACUsage_Off')[0].value=1}">
+                                        <option value="0">Off</option>
+                                        <option value="1">On</option>
+                                    </select>
+                                    <input type="hidden" name="HVACUsage_Off" value="1">
+                                    <input type="hidden" name="HVACUsage_On" value="0">
+                                </div>
+                                <!-- Lighting -->
+                                <div class="col-md-6">
+                                    <label class="form-label">Lighting State</label>
+                                    <select class="form-control"
+                                        onchange="if(this.value=='1'){document.getElementsByName('LightingUsage_On')[0].value=1;document.getElementsByName('LightingUsage_Off')[0].value=0}else{document.getElementsByName('LightingUsage_On')[0].value=0;document.getElementsByName('LightingUsage_Off')[0].value=1}">
+                                        <option value="0">Off</option>
+                                        <option value="1">On</option>
+                                    </select>
+                                    <input type="hidden" name="LightingUsage_Off" value="1">
+                                    <input type="hidden" name="LightingUsage_On" value="0">
+                                </div>
+                            </div>
+
+                            <h5 class="text-secondary mb-3 text-uppercase fs-6 ls-1 border-bottom border-dark pb-2">
+                                Schedule</h5>
+                            <div class="row g-3 mb-4">
+                                <div class="col-md-12">
+                                    <label class="form-label">Day of Week</label>
+                                    <select class="form-control" id="daySelect" onchange="updateDayInputs(this.value)">
+                                        <option value="Monday">Monday</option>
+                                        <option value="Tuesday">Tuesday</option>
+                                        <option value="Wednesday">Wednesday</option>
+                                        <option value="Thursday">Thursday</option>
+                                        <option value="Friday">Friday</option>
+                                        <option value="Saturday">Saturday</option>
+                                        <option value="Sunday">Sunday</option>
+                                    </select>
+                                    <!-- Hidden Inputs for One-Hot Encoding -->
+                                    <input type="hidden" name="DayOfWeek_Monday" value="1">
+                                    <input type="hidden" name="DayOfWeek_Tuesday" value="0">
+                                    <input type="hidden" name="DayOfWeek_Wednesday" value="0">
+                                    <input type="hidden" name="DayOfWeek_Thursday" value="0">
+                                    <input type="hidden" name="DayOfWeek_Friday" value="0">
+                                    <input type="hidden" name="DayOfWeek_Saturday" value="0">
+                                    <input type="hidden" name="DayOfWeek_Sunday" value="0">
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="holidayCheck"
+                                            onchange="updateHoliday(this.checked)">
+                                        <label class="form-check-label text-white" for="holidayCheck">Is
+                                            Holiday?</label>
+                                    </div>
+                                    <input type="hidden" name="Holiday_No" value="1">
+                                    <input type="hidden" name="Holiday_Yes" value="0">
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn btn-neon w-100">Initialize Prediction Protocols</button>
+                        </form>
+                    </div>
+
+                    <!-- Batch Input Form -->
+                    <div id="single" class="input-section" style="display: none;">
+                        <form method="POST">
+                            <input type="hidden" name="input_method" value="single">
+                            <div class="mb-3">
+                                <label class="form-label">Raw Data Stream</label>
+                                <textarea name="all_features" class="form-control font-monospace" rows="8"
+                                    placeholder="Paste 18 feature values..."
+                                    style="background: rgba(0,0,0,0.5); border-color: var(--accent-purple);"></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-neon w-100">Process Data Stream</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column: Sidebar -->
+            <div class="col-lg-4">
+                <div class="glass-card mb-4 text-center">
+                    <h4 class="mb-3 text-cyan">System Status</h4>
+                    <div style="font-size: 3rem; color: var(--accent-green);">
+                        <i class="fas fa-check-circle mb-2"></i>
+                    </div>
+                    <p class="mb-0">All Systems Operational</p>
+                    <hr style="border-color: rgba(255,255,255,0.1)">
+                    <div class="row text-start">
+                        <div class="col-6 mb-2 text-secondary">Latency</div>
+                        <div class="col-6 mb-2 text-end text-white live-stat-value">12 ms</div>
+                        <div class="col-6 mb-2 text-secondary">Uptime</div>
+                        <div class="col-6 mb-2 text-end text-white">99.9%</div>
+                    </div>
+                </div>
+
+                <div class="glass-card">
+                    <h5 class="mb-3">Live Feed</h5>
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="bg-success rounded-circle me-3" style="width: 10px; height: 10px;"></div>
+                        <small class="text-secondary">Sensor Node A1 connected</small>
+                    </div>
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="bg-warning rounded-circle me-3" style="width: 10px; height: 10px;"></div>
+                        <small class="text-secondary">Fluctuation detected in Sector 4</small>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <div class="bg-primary rounded-circle me-3" style="width: 10px; height: 10px;"></div>
+                        <small class="text-secondary">Model update pending...</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function updateDayInputs(day) {
+            const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+            days.forEach(d => {
+                const input = document.getElementsByName('DayOfWeek_' + d)[0];
+                if (input) input.value = (d === day) ? 1 : 0;
+            });
+        }
+
+        function updateHoliday(isHoliday) {
+            document.getElementsByName('Holiday_Yes')[0].value = isHoliday ? 1 : 0;
+            document.getElementsByName('Holiday_No')[0].value = isHoliday ? 0 : 1;
+        }
+
+        function showMethod(method) {
+            document.getElementById('individual').style.display = method === 'individual' ? 'block' : 'none';
+            document.getElementById('single').style.display = method === 'single' ? 'block' : 'none';
+        }
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+
+</html>
