@@ -106,21 +106,3 @@ git add README.md
 git commit -m "Added README"
 git push
 
-
-
-THIS IS FOR SAMPLE PURPOSE ONLY:
-## 🎥 Project Demo
-[Watch Video](https://www.youtube.com/your-video-link)
-
----
-
-## 📊 Output Screenshots
-
-### Energy Consumption Graph
-![Graph](images/graph.png)
-
-### Prediction Output
-![Output](images/output.png)
-
-### Workflow Diagram
-![Workflow](images/workflow.png)
